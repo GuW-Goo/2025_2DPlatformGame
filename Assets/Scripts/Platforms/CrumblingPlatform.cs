@@ -54,7 +54,7 @@ public class CrumblingPlatform : MonoBehaviour
         float elapsed = 0;
         while (elapsed < fallDelay)
         {
-            float shakeStrength = 0.05f;
+            float shakeStrength = 0.1f;
             for (int i = 0; i < childRenderers.Length; i++)
             {
                 Vector3 randomOffset = (Vector3)Random.insideUnitCircle * shakeStrength;
