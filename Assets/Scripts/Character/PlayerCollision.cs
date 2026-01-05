@@ -1,6 +1,7 @@
 using MyGameEnums;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEditor.PlayerSettings;
 
 // 캐릭터의 충돌감지 스크립트
@@ -101,6 +102,25 @@ public class PlayerCollision : MonoBehaviour
 
             // 회복오브젝트 제거
             Destroy(collision.gameObject);
+        }
+        // SpawnPoint트리거박스 충돌
+        else if(obj.CompareTag(TagName.SpawnPoint.GetTag()))
+        {
+            // SpawnPoint트리거의 중앙 아래 좌표 가져오기
+            Bounds spawnBounds = collision.bounds;
+            Vector2 newPos = new Vector2(spawnBounds.center.x, spawnBounds.min.y + 0.2f);
+
+            // 새로운 스폰포인트 설정
+            status.spawnPos = newPos;
+        }
+        // End 트리거
+        else if(obj.CompareTag("End"))
+        {
+            Debug.Log("다음 씬으로 넘어갑니다..");
+
+            // 다음 씬으로 넘어감
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneTransitionManager.Instance.ChangeScene(currentSceneIndex);
         }
     }
 

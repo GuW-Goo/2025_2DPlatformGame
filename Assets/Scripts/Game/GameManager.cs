@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     // 이어하기 시 임시로 저장할 변수
     private SaveDataModel pendingLoadData = null;
     
-    private bool isProgressing = false;
     public bool isPaused = false;
 
     

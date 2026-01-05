@@ -31,6 +31,17 @@ public class SceneTransitionManager : MonoBehaviour
         StartCoroutine(TransitionRoutine(sceneName));
     }
 
+    public void ChangeScene(int sceneIndex)
+    {
+        // ∫ÙµÂ¿Œµ¶Ω∫ø°º≠ æ¿ ¿Ã∏ß √£±‚
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(sceneIndex + 1);
+        string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+
+        Debug.Log("SceneName : " + sceneName);
+
+        StartCoroutine(TransitionRoutine(sceneName));
+    }
+
     private IEnumerator TransitionRoutine(string sceneName)
     {
         // »≠∏È æÓµ”∞‘ ∏∏µÈ±‚ (Fade Out)
@@ -60,4 +71,5 @@ public class SceneTransitionManager : MonoBehaviour
             yield return null;
         }
     }
+
 }
