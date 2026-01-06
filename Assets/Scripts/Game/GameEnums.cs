@@ -14,7 +14,8 @@ namespace MyGameEnums
         Heal,
         Sword,
         Mace,
-        CrumblePlatform
+        CrumblePlatform,
+        SavePoint
     }
     // 게임에 존재하는 씬
     public enum SceneName
@@ -47,7 +48,8 @@ namespace MyGameEnums
                 TagName.Heal => "Heal",
                 TagName.Sword => "Sword",
                 TagName.Mace => "Mace",
-                TagName.CrumblePlatform => "CrumblePlatform"
+                TagName.CrumblePlatform => "CrumblePlatform",
+                TagName.SavePoint => "SavePoint"
             };
         }
 

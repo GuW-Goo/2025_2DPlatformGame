@@ -16,10 +16,17 @@ public class UIManager : MonoBehaviour
     public float scaleFactor = 1.1f;
     public float animationSpeed = 0.1f;
 
-    private int selectedButtonIndex = 0;
-    private Dictionary<Transform, Coroutine> activeCoroutines = new Dictionary<Transform, Coroutine>();
+    [Header("팝업 설정")]
+    [SerializeField] private PopupNotice errorPopup;
+    [SerializeField] private PopupConfirm confirmPopup;
 
-    PopupNotice errorPopup;
+    [SerializeField] private CanvasGroup mainButtonsGroup;
+
+    // 현재 팝업이 열려있는지 확인하는 플래그
+    private bool isPopupOpen = false;
+
+    private int selectedButtonIndex = -1;
+    private Dictionary<Transform, Coroutine> activeCoroutines = new Dictionary<Transform, Coroutine>();
 
     void Start()
     {
@@ -30,11 +37,27 @@ public class UIManager : MonoBehaviour
             btn.transform.localScale = Vector3.one;
         }
 
+        StartCoroutine(InitFirstButton());
+    }
+
+    IEnumerator InitFirstButton()
+    {
+        yield return null; // 한 프레임 대기
         SetSelectedButton(0);
     }
 
     void Update()
     {
+        if (isPopupOpen)
+        {
+            // 팝업이 열려있을 때는 팝업 전용 조작
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) confirmPopup.Navigate(-1);
+            else if (Input.GetKeyDown(KeyCode.RightArrow)) confirmPopup.Navigate(1);
+
+            return;
+        }
+
+        // 기존 상/하 조작
         if (Input.GetKeyDown(KeyCode.UpArrow)) Navigate(-1);
         else if (Input.GetKeyDown(KeyCode.DownArrow)) Navigate(1);
     }
@@ -42,7 +65,47 @@ public class UIManager : MonoBehaviour
     // 인스펙터에서 버튼 클릭 시 연결할 함수들
     public void StartGameScene()
     {
+        SaveData saveData = new SaveData();
+
+        if (saveData.Read() != null) // 데이터가 있다면
+        {
+            SetMainButtonsInteractable(false);
+            isPopupOpen = true;
+            confirmPopup.Open();
+        }
+        else
+        {
+            StartNewGame();
+        }
+
+    }
+
+    // 팝업의 "예" 버튼에 연결할 함수
+    public void StartNewGame()
+    {
+        SaveData saveData = new SaveData();
+        saveData.Clear();
+        isPopupOpen = false;
         GameManager.Instance.StartNewGame();
+    }
+
+    // 팝업의 "아니오" 버튼에 연결할 함수
+    public void CloseConfirm()
+    {
+        SetMainButtonsInteractable(true);
+        isPopupOpen = false;
+        confirmPopup.Close();
+        SetSelectedButton(selectedButtonIndex);
+    }
+
+    // 버튼들의 상호작용을 한 번에 끄고 켜는 함수
+    private void SetMainButtonsInteractable(bool state)
+    {
+        if (mainButtonsGroup != null)
+        {
+            mainButtonsGroup.interactable = state;
+            mainButtonsGroup.blocksRaycasts = state;
+        }
     }
 
     public void ContinueGameScene()
@@ -65,6 +128,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
             Scene scene = SceneManager.GetSceneAt(i);
+            // 옵션씬이 있다면 옵션씬을 언로드 후 메인메뉴 로드
             if (scene.name == SceneName.OptionScene.GetScene())
             {
                 UnloadOption();
@@ -106,19 +170,21 @@ public class UIManager : MonoBehaviour
     // 선택된 버튼을 바꾸고 애니메이션을 명령합니다.
     private void SetSelectedButton(int newIndex)
     {
-        // 현재 선택된 버튼이 배열안에 있다면
-        if (selectedButtonIndex < menuButtons.Length)
-            // 기존 버튼 축소
+        // 이전 선택된 버튼 축소 (이전 인덱스가 유효하고 새 인덱스와 다를 때만)
+        if (selectedButtonIndex >= 0 && selectedButtonIndex < menuButtons.Length && selectedButtonIndex != newIndex)
+        {
             StartScaleAnimation(menuButtons[selectedButtonIndex].transform, Vector3.one);
+        }
 
         // 인덱스 갱신
         selectedButtonIndex = newIndex;
 
-        // 유니티 시스템상에서 이 버튼이 '선택됨' 상태임을 알림
-        EventSystem.current.SetSelectedGameObject(menuButtons[selectedButtonIndex].gameObject);
-
-        // 새로 선택된 버튼은 설정한 비율(scaleFactor)만큼 키웁니다.
-        StartScaleAnimation(menuButtons[selectedButtonIndex].transform, Vector3.one * scaleFactor);
+        // 새 버튼 확대
+        if (selectedButtonIndex >= 0)
+        {
+            EventSystem.current.SetSelectedGameObject(menuButtons[selectedButtonIndex].gameObject);
+            StartScaleAnimation(menuButtons[selectedButtonIndex].transform, Vector3.one * scaleFactor);
+        }
     }
 
     // 코루틴이 중복 실행되지 않도록 관리하는 함수입니다.

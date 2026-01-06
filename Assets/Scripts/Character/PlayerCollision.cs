@@ -128,8 +128,8 @@ public class PlayerCollision : MonoBehaviour
     {
         GameObject obj = collision.gameObject;
 
-        // 스폰포인트 깃발과 충돌, E를 눌렀을 때
-        if (obj.CompareTag(TagName.SpawnPoint.GetTag()) && Input.GetKeyDown(KeyCode.E))
+        // 세이브포인트 깃발과 충돌
+        if (obj.CompareTag(TagName.SavePoint.GetTag()))
         {
             // 충돌한 깃발의 위치를 가져옵니다.
             Vector2 flagCenterPos = obj.transform.position;
@@ -137,19 +137,16 @@ public class PlayerCollision : MonoBehaviour
             // 발이 땅에 묻히지 않도록 약간의 높이 보정(+0.2f)만 해줍니다.
             Vector2 spawnPointPos = new Vector2(flagCenterPos.x, flagCenterPos.y + 0.2f);
 
-            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-
+            // 세이브데이터 스폰위치 업데이트
             SaveDataModel data = new SaveDataModel
             {
-                spawnPos = spawnPointPos,
-                sceneName = currentScene
+                spawnPos = collision.transform.position,
+                sceneName = SceneManager.GetActiveScene().name
             };
 
-            // 기기에 스폰 저장
             saveData.Save(data);
 
             // 플레이어 상태 업데이트
-            status.spawnSceneName = currentScene;
             status.Heal(status.maxHealth);
         }
     }

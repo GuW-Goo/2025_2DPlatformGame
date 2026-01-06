@@ -41,7 +41,6 @@ public class PlayerStatus : MonoBehaviour
     private float flickerSpeed = 0.1f;
 
     public Vector2 spawnPos;
-    public string spawnSceneName;
 
     private void Awake()
     {

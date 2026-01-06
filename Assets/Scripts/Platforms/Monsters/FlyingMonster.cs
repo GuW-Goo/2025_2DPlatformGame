@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 // 공중에 있는 몬스터 스크립트
 
-public class FlyingMonster : MonoBehaviour
+public class FlyingMonster : MonoBehaviour, IAttackable
 {
     // 몬스터의 왕복지점 2개
     [SerializeField] private Transform patrolPointA;
@@ -82,6 +82,11 @@ public class FlyingMonster : MonoBehaviour
         }
     }
 
+    public void OnHit(Vector2 attackerPoint)
+    {
+        Dead();
+    }
+
     // 몬스터 사망 처리 후 리스폰
     private void Dead()
     {
@@ -127,17 +132,6 @@ public class FlyingMonster : MonoBehaviour
     {
         GameObject smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
         Destroy(smoke, 0.2f);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.transform.CompareTag(TagName.Sword.GetTag()))
-        {
-
-            Debug.Log("Monster Dead");
-
-            Dead();
-        }
     }
 
     // 몬스터 경로를 드로우

@@ -187,12 +187,14 @@ public class CharacterAttack : MonoBehaviour
     {
         GameObject obj = collision.gameObject;
 
+        IAttackable target = collision.GetComponent<IAttackable>();
+
         // 몬스터, 철퇴, 가시 충돌
-        if( obj.CompareTag( TagName.Monster.GetTag() ) 
-            || obj.CompareTag( TagName.Mace.GetTag() ) 
-            || obj.CompareTag( TagName.Spike.GetTag() ))
+        if( target != null )
         {
             Debug.Log("Player Attack");
+
+            target.OnHit(transform.position);
 
             // 히트스탑 (타격 성공시 정지) 코루틴
             if (!isHitStop)

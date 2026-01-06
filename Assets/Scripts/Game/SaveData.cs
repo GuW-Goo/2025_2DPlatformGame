@@ -41,25 +41,16 @@ public class SaveData
         return data;
     }
 
-    public void UpdateScene(string newScene)
+    public void Clear()
     {
-        SaveDataModel data = Read();
-
-        if (data != null)
+        if (File.Exists(path))
         {
-            data.sceneName = newScene;
-            Save(data);
+            File.Delete(path);
+            Debug.Log("세이브 파일이 삭제되었습니다: " + path);
         }
-    }
-
-    public void UpdateSpawnPos(Vector2 newPos)
-    {
-        SaveDataModel data = Read();
-
-        if (data != null)
+        else
         {
-            data.spawnPos = newPos;
-            Save(data);
+            Debug.Log("삭제할 파일이 존재하지 않습니다.");
         }
     }
 

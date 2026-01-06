@@ -791,21 +791,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134977649303870886, guid: c13d16ddb812ee147b26c8f4cddbff2f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.04
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 4134977649303870886, guid: c13d16ddb812ee147b26c8f4cddbff2f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.13
+      value: 0.089999914
       objectReference: {fileID: 0}
     - target: {fileID: 6868494499320512506, guid: c13d16ddb812ee147b26c8f4cddbff2f, type: 3}
       propertyPath: m_text
-      value: "\uB3C4\uB9DD\uCE58\uC9C0 \uC54A\uC544\uB3C4 \uB429\uB2C8\uB2E4! \uACF5\uACA9\uC5D0
-        \uC131\uACF5\uD574\uC11C \uB354\uBE14\uC810\uD504\uC640 \uB300\uC26C\uB97C
-        \uCD08\uAE30\uD654!"
+      value: "\uAE43\uBC1C\uC5D0 \uB2E4\uAC00\uAC00\uBA74 \uC790\uB3D9\uC73C\uB85C
+        Save\uB429\uB2C8\uB2E4!"
       objectReference: {fileID: 0}
     - target: {fileID: 9029559960136699241, guid: c13d16ddb812ee147b26c8f4cddbff2f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 111.53
+      value: 110.01
       objectReference: {fileID: 0}
     - target: {fileID: 9029559960136699241, guid: c13d16ddb812ee147b26c8f4cddbff2f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -53499,6 +53498,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1939671964
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 113.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510618232168178006, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6646680160015387076, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
+      propertyPath: m_Name
+      value: SpawnPoint
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fdbc49865e6461f4d8de59c9dec75f47, type: 3}
 --- !u!4 &2011516980 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9029559960136699241, guid: c13d16ddb812ee147b26c8f4cddbff2f, type: 3}
@@ -54077,3 +54133,4 @@ SceneRoots:
   - {fileID: 1933341563}
   - {fileID: 873413178}
   - {fileID: 218123518}
+  - {fileID: 1939671964}

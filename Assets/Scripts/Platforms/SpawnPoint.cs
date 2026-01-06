@@ -8,7 +8,7 @@ public class SpawnPoint : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag( TagName.Player.GetTag() ) && Input.GetKeyDown(KeyCode.E) )
+        if (collision.gameObject.CompareTag( TagName.Player.GetTag() ))
         {
             SpriteRenderer flagSr = GetComponentInChildren<SpriteRenderer>();
             if (flagSr != null && activeFlagSprite != null)
@@ -18,7 +18,7 @@ public class SpawnPoint : MonoBehaviour
             }
 
             // 다시 충돌해도 로직이 돌지 않게 태그변경
-            this.gameObject.tag = TagName.Untagged.GetTag();
+            gameObject.tag = TagName.Untagged.GetTag();
         }
     }
 }

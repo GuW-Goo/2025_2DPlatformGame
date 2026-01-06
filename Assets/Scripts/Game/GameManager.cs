@@ -74,6 +74,15 @@ public class GameManager : MonoBehaviour
             currentSceneName != SceneName.GameOverScene.GetScene())
         {
             SpawnPlayer();
+
+            // 씬 넘어갈 때 플레이어 스폰 위치를 저장
+            SaveDataModel data = new SaveDataModel
+            {
+                spawnPos = playerStatus.transform.position,
+                sceneName = currentSceneName
+            };
+
+            saveData.Save(data);
         }
     }
 
@@ -107,9 +116,6 @@ public class GameManager : MonoBehaviour
             playerStatus.transform.position = pendingLoadData.spawnPos;
             playerStatus.spawnPos = pendingLoadData.spawnPos;
 
-            Rigidbody2D rb = playerStatus.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.position = pendingLoadData.spawnPos;
-
             pendingLoadData = null;
         }
         else
@@ -127,10 +133,10 @@ public class GameManager : MonoBehaviour
     public bool ContinueGame()
     {
         SaveDataModel data = saveData.Read();
-        Debug.Log(data);
 
         if (data == null)
         {
+            Debug.Log("세이브가 없습니다");
             return false;
         }
 
