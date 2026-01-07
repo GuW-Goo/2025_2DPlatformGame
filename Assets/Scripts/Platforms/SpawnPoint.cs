@@ -6,7 +6,7 @@ public class SpawnPoint : MonoBehaviour
 
     [SerializeField] private Sprite activeFlagSprite;   // 활성화된 깃발 이미지
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag( TagName.Player.GetTag() ))
         {

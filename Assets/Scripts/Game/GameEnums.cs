@@ -49,7 +49,8 @@ namespace MyGameEnums
                 TagName.Sword => "Sword",
                 TagName.Mace => "Mace",
                 TagName.CrumblePlatform => "CrumblePlatform",
-                TagName.SavePoint => "SavePoint"
+                TagName.SavePoint => "SavePoint",
+                _ => LogAndReturn(tagName.ToString(), "Untagged")
             };
         }
 
@@ -67,9 +68,15 @@ namespace MyGameEnums
                 SceneName.StageScene3 => "StageScene3",
                 SceneName.StageScene4 => "StageScene4",
                 SceneName.StageScene5 => "StageScene5",
+                _ => LogAndReturn(scenesName.ToString(), "UnknownScene")
             };
         }
 
-
+        // 로그를 출력하고 기본값을 반환하는 함수
+        private static string LogAndReturn(string enumValue, string defaultValue)
+        {
+            UnityEngine.Debug.LogWarning($"[Enum Error] 정의되지 않은 Enum 값({enumValue})이 들어왔습니다. 기본값({defaultValue})을 반환합니다.");
+            return defaultValue;
+        }
     }
 }

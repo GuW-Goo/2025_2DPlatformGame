@@ -11,7 +11,7 @@ using static PlayerStatus;
 public class CharacterMove : MonoBehaviour
 {
     Animator animator;
-    Rigidbody2D rigidbody;
+    Rigidbody2D rb;
     SpriteRenderer spriteRenderer;
 
     SearchOnPlatform onPlatform;
@@ -37,7 +37,7 @@ public class CharacterMove : MonoBehaviour
         onPlatform = GetComponentInChildren<SearchOnPlatform>();
 
         animator = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         // 플레이어가 땅에 붙어있는지 확인하는 이벤트리스너
@@ -113,27 +113,27 @@ public class CharacterMove : MonoBehaviour
         if (status.isMoving)
         {
             status.wasKnockedback = false;  // 키를 누르는 순간 넉백 관성 해제
-            rigidbody.linearVelocity = new Vector2(moveDirectionX * status.moveSpeed, rigidbody.linearVelocity.y);
+            rb.linearVelocity = new Vector2(moveDirectionX * status.moveSpeed, rb.linearVelocity.y);
         }
         else
         {
             //  땅 위라면 즉시 정지 (미끄럼 방지)
             if (status.onGrounded)
             {
-                rigidbody.linearVelocity = new Vector2(0.0f, rigidbody.linearVelocity.y);
+                rb.linearVelocity = new Vector2(0.0f, rb.linearVelocity.y);
             }
             // 공중인데 넉백 상태가 아니라면 즉시 정지 (공중 조작감 향상)
             else if (!status.wasKnockedback)
             {
-                rigidbody.linearVelocity = new Vector2(0f, rigidbody.linearVelocity.y);
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             }
             // 넉백 상태로 공중에 있을 때 -> 서서히 속도를 줄임 (감속)
             else
             {
                 // 현재 x축 속도를 0으로 부드럽게 보간(Lerp)합니다.
-                float dampedX = Mathf.Lerp(rigidbody.linearVelocity.x, 0f, Time.deltaTime * airResistance);
+                float dampedX = Mathf.Lerp(rb.linearVelocity.x, 0f, Time.deltaTime * airResistance);
 
-                rigidbody.linearVelocity = new Vector2(dampedX, rigidbody.linearVelocity.y);
+                rb.linearVelocity = new Vector2(dampedX, rb.linearVelocity.y);
 
                 // 속도가 거의 0에 가까워지면 넉백 관성 상태를 끕니다.
                 if (Mathf.Abs(dampedX) < 0.1f)
@@ -162,8 +162,8 @@ public class CharacterMove : MonoBehaviour
                 coyoteTimeCounter = 0f; // 점프를 한 번 하면 코요테 타임 즉시 종료
                 status.canDoubleJump = true;
 
-                rigidbody.linearVelocity = new Vector2(rigidbody.linearVelocity.x, 0); // y가속도 초기화
-                rigidbody.AddForce(Vector2.up * status.jumpPower);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); // y가속도 초기화
+                rb.AddForce(Vector2.up * status.jumpPower);
 
                 animator.SetBool("isJump", true);
                 Debug.Log("Coyote Jump!");
@@ -171,8 +171,8 @@ public class CharacterMove : MonoBehaviour
             else if (status.canDoubleJump)
             {
                 status.canDoubleJump = false;
-                rigidbody.linearVelocity = new Vector2(rigidbody.linearVelocity.x, 0);
-                rigidbody.AddForce(Vector2.up * status.jumpPower);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+                rb.AddForce(Vector2.up * status.jumpPower);
                 animator.Play("PlayerJump", -1, 0f);
             }
         }
@@ -210,20 +210,20 @@ public class CharacterMove : MonoBehaviour
         float dashDirection = transform.localScale.x > 0 ? 1.0f : -1.0f;
 
         // 캐릭터가 받고있는 중력을 저장하고 대쉬중일 때 중력영향을 0으로 설정
-        float defaultGravity = rigidbody.gravityScale;
-        rigidbody.gravityScale = 0.0f;
+        float defaultGravity = rb.gravityScale;
+        rb.gravityScale = 0.0f;
 
         // 대쉬 진행
-        rigidbody.linearVelocity = new Vector2(dashDirection * status.dashPower, 0.0f);
+        rb.linearVelocity = new Vector2(dashDirection * status.dashPower, 0.0f);
 
         // 대쉬 지속시간만큼 기다림
         yield return new WaitForSeconds(status.dashDuration);
 
         // 관성 초기화
-        rigidbody.linearVelocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
 
         // 캐릭터를 기본상태로 되돌림
-        rigidbody.gravityScale = defaultGravity;
+        rb.gravityScale = defaultGravity;
         status.isDashing = false;
     }
 

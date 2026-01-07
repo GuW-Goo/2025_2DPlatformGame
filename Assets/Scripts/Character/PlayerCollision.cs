@@ -113,23 +113,8 @@ public class PlayerCollision : MonoBehaviour
             // 새로운 스폰포인트 설정
             status.spawnPos = newPos;
         }
-        // End 트리거
-        else if(obj.CompareTag("End"))
-        {
-            Debug.Log("다음 씬으로 넘어갑니다..");
-
-            // 다음 씬으로 넘어감
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneTransitionManager.Instance.ChangeScene(currentSceneIndex);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        GameObject obj = collision.gameObject;
-
         // 세이브포인트 깃발과 충돌
-        if (obj.CompareTag(TagName.SavePoint.GetTag()))
+        else if (obj.CompareTag(TagName.SavePoint.GetTag()))
         {
             // 충돌한 깃발의 위치를 가져옵니다.
             Vector2 flagCenterPos = obj.transform.position;
@@ -148,6 +133,15 @@ public class PlayerCollision : MonoBehaviour
 
             // 플레이어 상태 업데이트
             status.Heal(status.maxHealth);
+        }
+        // End 트리거
+        else if (obj.CompareTag("End"))
+        {
+            Debug.Log("다음 씬으로 넘어갑니다..");
+
+            // 다음 씬으로 넘어감
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneTransitionManager.Instance.ChangeScene(currentSceneIndex);
         }
     }
 }

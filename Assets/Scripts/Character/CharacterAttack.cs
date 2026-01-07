@@ -22,7 +22,7 @@ public class CharacterAttack : MonoBehaviour
     GameObject sword;
     GameObject effect;
     SwordEffectPos effectScript;
-    Rigidbody2D rigidbody;
+    Rigidbody2D rb;
 
     bool isHitStop = false;
 
@@ -38,7 +38,7 @@ public class CharacterAttack : MonoBehaviour
         // 검의 상태 초기화
         sword = Instantiate(swordPrefab, swordPivot);
         swordSR = sword.GetComponent<SpriteRenderer>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
 
         effect = sword.transform.Find("SwordEffect").gameObject;
         effectScript = effect.GetComponent<SwordEffectPos>();
@@ -214,8 +214,8 @@ public class CharacterAttack : MonoBehaviour
                 status.canDoubleJump = true;
 
                 // 위로 튕겨오르기
-                rigidbody.linearVelocity = new Vector2(rigidbody.linearVelocity.x, 0);
-                rigidbody.AddForce(Vector2.up * recoilForce, ForceMode2D.Impulse);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+                rb.AddForce(Vector2.up * recoilForce, ForceMode2D.Impulse);
             }
         }
     }
