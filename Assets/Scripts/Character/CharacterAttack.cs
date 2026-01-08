@@ -25,6 +25,7 @@ public class CharacterAttack : MonoBehaviour
     Rigidbody2D rb;
 
     bool isHitStop = false;
+    bool hasHitSpike = false;
 
     private void Awake()
     {
@@ -131,6 +132,7 @@ public class CharacterAttack : MonoBehaviour
     {
         status.canAttack = false;
         status.isAttacking = true;
+        hasHitSpike = false;
 
         float elapsed = 0.0f;   // 경과한 시간
         float duration = 0.1f;  // 휘두르기 지속시간
@@ -186,6 +188,13 @@ public class CharacterAttack : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject obj = collision.gameObject;
+
+        // 겹쳐있는 가시 중복 Hit 방지
+        if (obj.CompareTag( TagName.Spike.GetTag() ))
+        {
+            if (hasHitSpike) return; // 이미 가시를 하나 때렸으면 무시
+            hasHitSpike = true;      // 가시 타격 처리됨 표시
+        }
 
         IAttackable target = collision.GetComponent<IAttackable>();
 

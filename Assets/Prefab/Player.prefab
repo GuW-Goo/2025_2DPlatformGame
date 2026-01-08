@@ -465,7 +465,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 3
-  moveSpeed: 8.5
+  moveSpeed: 7.5
   jumpPower: 580
   dashPower: 30
   dashDuration: 0.185
@@ -480,7 +480,6 @@ MonoBehaviour:
   isKnockedback: 0
   currentHealth: 0
   spawnPos: {x: 0, y: 0}
-  spawnSceneName: 
 --- !u!114 &1954353175202092971
 MonoBehaviour:
   m_ObjectHideFlags: 0

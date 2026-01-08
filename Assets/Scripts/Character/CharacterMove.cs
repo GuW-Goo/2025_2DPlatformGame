@@ -21,7 +21,7 @@ public class CharacterMove : MonoBehaviour
     float moveDirectionX = 0f;
 
     // 코요테타임 (점프 조작감 개선)
-    float coyoteTimeDuration = 0.15f;
+    float coyoteTimeDuration = 0.1f;
     float coyoteTimeCounter;
 
     // 공중저항계수
@@ -222,9 +222,18 @@ public class CharacterMove : MonoBehaviour
         // 관성 초기화
         rb.linearVelocity = Vector2.zero;
 
+        // 대쉬 직후 코요테 점프를 방지함
+        coyoteTimeCounter = 0;
+
         // 캐릭터를 기본상태로 되돌림
         rb.gravityScale = defaultGravity;
         status.isDashing = false;
+        animator.SetBool("isFalling", false);
+
+        if (status.onGrounded)
+        {
+            status.canDash = true;
+        }
     }
 
     public void Knockback(Vector2 damageSourcePos)

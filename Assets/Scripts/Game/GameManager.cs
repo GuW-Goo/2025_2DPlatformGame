@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
     {
         pendingLoadData = null;
 
-        SceneTransitionManager.Instance.ChangeScene( SceneName.StageScene1.GetScene() );
+        SceneTransitionManager.Instance.ChangeScene( SceneName.TutorialStage.GetScene() );
     }
 
     // 플레이어 생성시 (씬 전환시) 플레이어가 매니저에게 알림
