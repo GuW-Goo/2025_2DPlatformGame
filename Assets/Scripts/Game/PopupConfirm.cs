@@ -47,9 +47,8 @@ public class PopupConfirm : MonoBehaviour
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            // 선택된 버튼은 1.1배, 나머지는 1.0배
-            // 추가로 색상을 변경하고 싶다면 buttons[i].image.color 등을 조절하세요.
-            Vector3 targetScale = (i == selectedIndex) ? Vector3.one * 1.1f : Vector3.one;
+            // 선택된 버튼은 1.3배, 나머지는 1.0배
+            Vector3 targetScale = (i == selectedIndex) ? Vector3.one * 1.3f : Vector3.one;
             buttons[i].transform.localScale = targetScale;
 
             if (i == selectedIndex)
