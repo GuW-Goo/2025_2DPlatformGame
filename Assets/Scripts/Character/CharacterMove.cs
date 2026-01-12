@@ -64,22 +64,27 @@ public class CharacterMove : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime; // 공중이면 시간 감소
         }
 
-        // Update()에서 Move()에 필요한 변수만 저장 -> FixedUpdate()에서 Move()호출
-        if (Input.GetKey(KeyCode.RightArrow))
+        // 대쉬 중 이동조작 막기
+        if(!status.isDashing)
         {
-            status.isMoving = true;
-            moveDirectionX = 1.0f;
+            // Update()에서 Move()에 필요한 변수만 저장 -> FixedUpdate()에서 Move()호출
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                status.isMoving = true;
+                moveDirectionX = 1.0f;
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                status.isMoving = true;
+                moveDirectionX = -1.0f;
+            }
+            else
+            {
+                status.isMoving = false;
+                moveDirectionX = 0f;
+            }
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            status.isMoving = true;
-            moveDirectionX = -1.0f;
-        }
-        else
-        {
-            status.isMoving = false;
-            moveDirectionX = 0f;
-        }
+        
 
         Jump();
         Dash();
@@ -203,6 +208,7 @@ public class CharacterMove : MonoBehaviour
     {
         status.canDash = false;
         status.isDashing = true;
+        moveDirectionX = 0.0f;
 
         animator.SetBool("isFalling", true);
 

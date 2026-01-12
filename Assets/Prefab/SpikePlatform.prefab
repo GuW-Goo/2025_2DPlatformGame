@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1515162956528889916}
   m_Layer: 0
   m_Name: SpikePlatform
-  m_TagString: Untagged
+  m_TagString: CrumblePlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,6 +98,10 @@ PrefabInstance:
     - target: {fileID: 1659441548304393004, guid: a1310c3dd815f224eb9bf484fee6dba9, type: 3}
       propertyPath: m_Name
       value: Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659441548304393004, guid: a1310c3dd815f224eb9bf484fee6dba9, type: 3}
+      propertyPath: m_TagString
+      value: CrumblePlatform
       objectReference: {fileID: 0}
     - target: {fileID: 4798177386639416363, guid: a1310c3dd815f224eb9bf484fee6dba9, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.size
