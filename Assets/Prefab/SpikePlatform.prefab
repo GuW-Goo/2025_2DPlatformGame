@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7594d405948b54badf6dbcc209c4da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrapPlatform
-  SpikePrefab: {fileID: 222017819472676271, guid: ac3ee8e05c019b44aabe23041a3c8029, type: 3}
+  SpikePrefab: {fileID: 7445407639709121611, guid: 0c31e5fc972c00d44bdf658c881f2e8c, type: 3}
   SpikeCount: 2
 --- !u!1001 &5313608871613835571
 PrefabInstance:

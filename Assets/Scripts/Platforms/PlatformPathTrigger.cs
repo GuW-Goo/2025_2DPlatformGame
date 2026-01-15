@@ -8,7 +8,7 @@ public class PlatformPathTrigger : MonoBehaviour
 
     private float appearanceInterval = 1.0f; // 다음 플랫폼이 나타날 때까지의 간격
     private float platformDuration = 1.5f;   // 플랫폼이 완전히 나타나서 유지되는 시간
-    private float fadeDuration = 0.3f;       // fade In & Out 지속시간
+    private float fadeDuration = 0.5f;       // fade In & Out 지속시간
 
     private bool isStarted = false;
 

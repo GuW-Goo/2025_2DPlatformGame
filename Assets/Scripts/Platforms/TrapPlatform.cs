@@ -12,7 +12,7 @@ public class TrapPlatform : MonoBehaviour
     List<GameObject> spikeList = new List<GameObject>();
 
     private float spikeOut = 1.5f;  // Spike가 튀어나와있을 시간
-    private float spikeIn = 1.5f;   // Spike가 들어가있을 시간
+    private float spikeIn = 2.0f;   // Spike가 들어가있을 시간
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class TrapPlatform : MonoBehaviour
         while (true)
         {
             // Spike 튀어나오기
-            StartCoroutine(SpikeInOut(0.95f));
+            StartCoroutine(SpikeInOut(0.93f));
             yield return new WaitForSeconds(spikeOut);
 
             // Spike 들어가기
