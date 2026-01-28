@@ -55,5 +55,9 @@ public class RankingUIManager : MonoBehaviour
 
         // 내 기록 슬롯 업데이트
         myRecordSlot.SetData(myRank, currentRecord);
+
+        // 세이브 초기화
+        SaveData saveData = new SaveData();
+        saveData.Clear();
     }
 }
