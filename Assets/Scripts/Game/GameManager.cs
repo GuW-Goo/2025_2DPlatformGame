@@ -10,17 +10,14 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
 
-
     static public GameManager Instance;
 
     PlayerStatus playerStatus;  // 플레이어의 상태를 알려줌
-    SaveData saveData;  // 저장된 데이터 관리
 
-    // 이어하기 시 임시로 저장할 변수
-    private SaveDataModel pendingLoadData = null;
-    
+    public SaveData saveData { get; private set; }  // 세이브 데이터 관리
+    private SaveDataModel pendingLoadData = null;   // 이어하기 시 임시로 저장할 변수
+
     public bool isPaused = false;
-
     
     private void Awake()
     {
@@ -29,14 +26,14 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            // save를 Awake에서 미리 생성
+            saveData = new SaveData();
         }
         else
         {
             Destroy(gameObject);
             return;
         }
-
-        saveData = new SaveData();
     }
 
 
@@ -69,18 +66,25 @@ public class GameManager : MonoBehaviour
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
 
-        // 메인메뉴나 게임오버 씬이 아닐 때만 플레이어 생성
+        // 메인메뉴, 게임오버, 랭킹 씬이 아닐 때만 플레이어 생성
         if (currentSceneName != SceneName.MainMenuScene.GetScene() &&
-            currentSceneName != SceneName.GameOverScene.GetScene())
+            currentSceneName != SceneName.GameOverScene.GetScene() &&
+            currentSceneName != SceneName.RankingScene.GetScene() )
         {
             SpawnPlayer();
 
-            // 씬 넘어갈 때 플레이어 스폰 위치를 저장
-            SaveDataModel data = new SaveDataModel
+            // 기존 데이터를 불러오기
+            SaveDataModel data = saveData.Read();
+
+            // 만약 data가 null이면 새로 생성
+            if(data == null)
             {
-                spawnPos = playerStatus.transform.position,
-                sceneName = currentSceneName
-            };
+                data = new SaveDataModel();
+            }
+
+            // 위치와 씬 이름만 갱신 (stageClearTimes는 보존)
+            data.spawnPos = playerStatus.transform.position;
+            data.sceneName = currentSceneName;
 
             saveData.Save(data);
         }
@@ -111,14 +115,17 @@ public class GameManager : MonoBehaviour
     // 위치 설정 로직
     private void SetPlayerPosition()
     {
-        if (pendingLoadData != null)
+        if (pendingLoadData != null) // 이어하기 시
         {
             playerStatus.transform.position = pendingLoadData.spawnPos;
             playerStatus.spawnPos = pendingLoadData.spawnPos;
-
+            if(TimeManager.Instance != null)
+            {
+                TimeManager.Instance.SetCurrentTime(pendingLoadData.tempElapsedTime);
+            }
             pendingLoadData = null;
         }
-        else
+        else    // 처음부터 시작 시
         {
             // 새 게임 위치 (StartPoint 찾기)
             GameObject startPoint = GameObject.Find("StartPoint");
@@ -126,32 +133,69 @@ public class GameManager : MonoBehaviour
 
             playerStatus.transform.position = targetPos;
             playerStatus.spawnPos = targetPos;
+
+            if(TimeManager.Instance != null)
+            {
+                TimeManager.Instance.SetCurrentTime(0.0f);
+            }
         }
     }
 
     // 이어하기, 다시하기
     public bool ContinueGame()
     {
+        // saveData 자체가 null인지 확인
+        if (saveData == null) saveData = new SaveData();
+
         SaveDataModel data = saveData.Read();
 
-        if (data == null)
+        // 데이터 유효성 검사
+        if (data == null || string.IsNullOrEmpty(data.sceneName))
         {
-            Debug.Log("세이브가 없습니다");
+            Debug.LogWarning("불러올 세이브 데이터가 유효하지 않습니다.");
             return false;
         }
 
         pendingLoadData = data;
-        SceneTransitionManager.Instance.ChangeScene(data.sceneName);
 
-        return true;
+        // SceneTransitionManager 인스턴스 체크 (에러 방지)
+        if (SceneTransitionManager.Instance != null)
+        {
+            SceneTransitionManager.Instance.ChangeScene(data.sceneName);
+            return true;
+        }
+        else
+        {
+            Debug.LogError("SceneTransitionManager가 씬에 존재하지 않습니다!");
+            return false;
+        }
     }
 
     // 새 게임 시작
     public void StartNewGame()
     {
-        pendingLoadData = null;
+        if (saveData == null)
+        {
+            saveData = new SaveData();
+            Debug.Log("saveData 객체가 null이어서 새로 생성했습니다.");
+        }
 
+        saveData.Clear();
+        pendingLoadData = null;
         SceneTransitionManager.Instance.ChangeScene( SceneName.TutorialStage.GetScene() );
+    }
+
+    // Stage1부터 시작 (튜토리얼 스킵)
+    public void StartFromStage1()
+    {
+        if (saveData == null)
+        {
+            saveData = new SaveData();
+        }
+        saveData.Clear();
+
+        // Stage1으로 씬 전환
+        SceneTransitionManager.Instance.ChangeScene( SceneName.StageScene1.GetScene() );
     }
 
     // 플레이어 생성시 (씬 전환시) 플레이어가 매니저에게 알림
@@ -182,7 +226,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("GameOver");
-
+        Time.timeScale = 1.0f;
         SceneTransitionManager.Instance.ChangeScene(SceneName.GameOverScene.GetScene());
     }
 

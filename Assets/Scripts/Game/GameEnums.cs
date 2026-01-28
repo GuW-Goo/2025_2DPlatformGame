@@ -29,7 +29,8 @@ namespace MyGameEnums
         StageScene2,
         StageScene3,
         StageScene4,
-        StageScene5
+        StageScene5,
+        RankingScene
     }
 
     public static class TagNameToString
@@ -70,6 +71,7 @@ namespace MyGameEnums
                 SceneName.StageScene3 => "StageScene3",
                 SceneName.StageScene4 => "StageScene4",
                 SceneName.StageScene5 => "StageScene5",
+                SceneName.RankingScene => "RankingScene",
                 _ => LogAndReturn(scenesName.ToString(), "UnknownScene")
             };
         }

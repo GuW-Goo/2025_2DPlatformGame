@@ -66,8 +66,9 @@ public class UIManager : MonoBehaviour
     public void StartGameScene()
     {
         SaveData saveData = new SaveData();
+        SaveDataModel data = saveData.Read();
 
-        if (saveData.Read() != null) // 데이터가 있다면
+        if (saveData.Read() != null && !string.IsNullOrEmpty(data.sceneName)) // 데이터가 있다면
         {
             SetMainButtonsInteractable(false);
             isPopupOpen = true;
@@ -120,6 +121,17 @@ public class UIManager : MonoBehaviour
                 errorPopup.ShowNotice();
             }
         }
+    }
+
+    // 랭킹씬에서 "다시하기"버튼에 연결할 함수
+    public void RestartFromStage1()
+    {
+        // 기존 세이브 삭제 (새로운 시작을 위해)
+        SaveData saveData = new SaveData();
+        saveData.Clear();
+
+        // Stage1부터 시작 (튜토리얼 Stage 스킵)
+        GameManager.Instance.StartFromStage1();
     }
 
     public void LoadMainMenu()

@@ -1,44 +1,27 @@
 using UnityEngine;
 using System.IO;
-using Unity.VisualScripting;
-
-// 게임의 세이브데이터 파일을 관리하는 스크립트
-
-[System.Serializable]
-public class SaveDataModel
-{
-    public Vector2 spawnPos;
-    public string sceneName;
-}
 
 public class SaveData
 {
-    // 파일이 저장될 경로
-    string path = Path.Combine(Application.persistentDataPath, "saveData.json");
+    private string path;
+
+    public SaveData()
+    {
+        path = Path.Combine(Application.persistentDataPath, "saveData.json");
+    }
 
     public void Save(SaveDataModel data)
     {
         string json = JsonUtility.ToJson(data, true);
-
         File.WriteAllText(path, json);
-
-        Debug.Log("저장완료! path : " + path);
+        Debug.Log("Data 저장 완료 Path : " + path);
     }
 
     public SaveDataModel Read()
     {
-        if (!File.Exists(path))
-        {
-            Debug.Log("세이브가 없습니다!");
-            return null;
-        }
-
+        if (!File.Exists(path)) return new SaveDataModel();
         string json = File.ReadAllText(path);
-        SaveDataModel data = JsonUtility.FromJson<SaveDataModel>(json);
-
-        Debug.Log("세이브 불러오기 성공!");
-
-        return data;
+        return JsonUtility.FromJson<SaveDataModel>(json);
     }
 
     public void Clear()
@@ -46,13 +29,6 @@ public class SaveData
         if (File.Exists(path))
         {
             File.Delete(path);
-            Debug.Log("세이브 파일이 삭제되었습니다: " + path);
-        }
-        else
-        {
-            Debug.Log("삭제할 파일이 존재하지 않습니다.");
         }
     }
-
 }
-

@@ -12,6 +12,7 @@ public class PlayerCollision : MonoBehaviour
     PlayerStatus status;    
     CharacterMove move;
 
+    private bool isFinishing = false;
 
     void Start()
     {
@@ -75,7 +76,8 @@ public class PlayerCollision : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject obj = collision.gameObject;
-        
+        if (isFinishing) return;
+
         // 낙사구간 충돌
         if (obj.CompareTag(TagName.DeadZone.GetTag()))
         {
@@ -137,11 +139,35 @@ public class PlayerCollision : MonoBehaviour
         // End 트리거
         else if (obj.CompareTag("End"))
         {
-            Debug.Log("다음 씬으로 넘어갑니다..");
+            isFinishing = true;
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
+
+            // 튜토리얼 스테이지 예외 처리
+            if (buildIndex == 3)
+            {
+                SceneTransitionManager.Instance.ChangeScene(buildIndex);
+                return;
+            }
+
+            // 실제 스테이지 기록 처리 (Index : 4 ~ 8 || 실제 저장 Index : 0 ~ 4)
+            int stageDataIndex = buildIndex - 4;
+            if(TimeManager.Instance != null)
+            {
+                Debug.Log(stageDataIndex + 1 + " 스테이지 클리어 시간 : " + TimeManager.Instance.currentStageTime);
+                TimeManager.Instance.CompleteStage(stageDataIndex);
+            }
+
+            // 마지막 스테이지 클리어 시 랭킹 등록
+            if(stageDataIndex == 4 && RankingManager.Instance != null)
+            {
+                RankingManager.Instance.RegisterClearRecord();
+            }
 
             // 다음 씬으로 넘어감
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneTransitionManager.Instance.ChangeScene(currentSceneIndex);
+            SceneTransitionManager.Instance.ChangeScene(buildIndex);
+
+           
+            Debug.Log("다음 씬으로 넘어갑니다..");
         }
     }
 }
